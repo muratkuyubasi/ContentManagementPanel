@@ -1,0 +1,418 @@
+<section class="login-area">
+    <div class="row m-0">
+        <div class="col-lg-6 col-md-4 p-0" style="background: #99d0dc;">
+            <div class="login-image">
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<div class="container application">
+    <div class="tab-wrap application">
+        <input type="radio" id="tab1" name="tabGroup1" class="tab" checked>
+        <label for="tab1">Kişisel Bilgiler <label class="text-danger fs-5">*</label></label>
+        <input type="radio" id="tab2" name="tabGroup1" class="tab" [disabled]="!checkForm(mainForm,1)">
+        <label for="tab2">Adres Bilgileri <label class="text-danger fs-5">*</label></label>
+        <input type="radio" id="tab3" name="tabGroup1" class="tab" [disabled]="!checkForm(mainForm,2)">
+        <label for="tab3">Eş Bilgisi</label>
+        <input type="radio" id="tab4" name="tabGroup1" class="tab" [disabled]="!checkForm(mainForm,2)">
+        <label for="tab4">Çocuk Bilgisi</label>
+
+
+        <div class="tab__content">
+            <h3 class="form-title">Kişisel Bilgiler</h3>
+            <form class="row col md-12" [formGroup]="mainForm">
+
+                <div class="col-md-6">
+                    <label class="form-label">Adı<label class="text-danger fs-6">*</label></label>
+                    <input type="text" class="form-control" formControlName="firstName" placeholder="Adı">
+                    <div *ngIf="mainForm.get('firstName')?.invalid && (mainForm.get('firstName').dirty || mainForm.get('firstName').touched)"
+                        class="alert">
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Soyadı<label class="text-danger fs-6">*</label></label>
+                    <input type="text" class="form-control" formControlName="lastName" placeholder="Soyadı">
+                    <div *ngIf="mainForm.get('lastName')?.invalid && (mainForm.get('lastName').dirty || mainForm.get('lastName').touched)"
+                        class="alert">
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">İsveç Personummer<label class="text-danger fs-6">*</label></label>
+                    <input type="text" class="form-control" formControlName="identificationNumber"
+                        placeholder="xxxxxx-xxxx" appIdentificationFormat maxlength="11">
+                    <div *ngIf="mainForm.get('identificationNumber')?.invalid && (mainForm.get('identificationNumber').dirty || mainForm.get('identificationNumber').touched)"
+                        class="alert">
+                        <div *ngIf="mainForm.get('identificationNumber').errors?.required">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+                        <div *ngIf=" mainForm.get('identificationNumber')?.hasError('minlength') ">Eksik rakam girdiniz.
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Doğum Yeri<label class="text-danger fs-6">*</label></label>
+                    <input type="text" class="form-control" formControlName="birthPlace" placeholder="Doğum Yeri">
+                    <div *ngIf="mainForm.get('birthPlace')?.invalid && (mainForm.get('birthPlace').dirty || mainForm.get('birthPlace').touched)"
+                        class="alert">
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Cinsiyet<label class="text-danger fs-6">*</label></label>
+                    <select formControlName="genderId" name="genderId" class="form-control">
+                        <option value="" selected disabled>Seçiniz</option>
+                        <option *ngFor="let item of gender" [ngValue]="item.id">{{item.name}}</option>
+                    </select>
+                    <div *ngIf="mainForm.get('genderId')?.invalid && (mainForm.get('genderId').dirty || mainForm.get('genderId').touched)"
+                        class="alert">
+
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Uyruk<label class="text-danger fs-6">*</label></label>
+                    <select formControlName="nationality" name="nationality" class="form-control">
+                        <option value="" selected disabled>Seçiniz</option>
+                        <option *ngFor="let item of nationality" [ngValue]="item.name">{{item.name}}
+                        </option>
+                    </select>
+                    <div *ngIf="mainForm.get('nationality')?.invalid && (mainForm.get('nationality').dirty || mainForm.get('nationality').touched)"
+                        class="alert">
+
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Doğum Tarihi<label class="text-danger fs-6">*</label></label>
+                    <input type="date" class="form-control" formControlName="birthDay" placeholder="Doğum Tarihi">
+                    <div *ngIf="mainForm.get('birthDay')?.invalid && (mainForm.get('birthDay').dirty || mainForm.get('birthDay').touched)"
+                        class="alert">
+
+                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary" (click)="nextTab(0)" [disabled]="!checkForm(mainForm,1)">
+                    <div *ngIf="!checkForm(mainForm,1)">*İlerlemek için zorunlu alanları doldurunuz</div>
+                    <div *ngIf="checkForm(mainForm,1)">İlerle</div>
+                </button>
+
+
+            </form>
+
+        </div>
+        <div class="tab__content personal">
+            <h3 class="form-title">İsveç Adresi</h3>
+            <form class="row col md-12" [formGroup]="mainForm">
+                <div formGroupName="address">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Cadde ve Sokak<label class="text-danger fs-6">*</label></label>
+                            <input type="text" class="form-control" formControlName="street"
+                                placeholder="Cadde ve Sokak">
+                            <div *ngIf="mainForm.get('address.street')?.invalid && (mainForm.get('address.street').dirty || mainForm.get('address.street').touched)"
+                                class="alert">
+
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Posta Kodu<label class="text-danger fs-6">*</label></label>
+                            <input type="text" class="form-control" formControlName="postCode" placeholder="Posta Kodu">
+                            <div *ngIf="mainForm.get('address.postCode')?.invalid && (mainForm.get('address.postCode').dirty || mainForm.get('address.postCode').touched)"
+                                class="alert">
+
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Bölge<label class="text-danger fs-6">*</label></label>
+                            <input type="text" class="form-control" formControlName="district" placeholder="Bölge">
+                            <div *ngIf="mainForm.get('address.district')?.invalid && (mainForm.get('address.district').dirty || mainForm.get('address.district').touched)"
+                                class="alert">
+
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label class="form-label">Email<label class="text-danger fs-6">*</label></label>
+                            <input type="text" class="form-control" formControlName="email" placeholder="Email">
+                            <div *ngIf="mainForm.get('address.email')?.invalid && (mainForm.get('address.email').dirty || mainForm.get('address.email').touched)"
+                                class="alert">
+                                <div *ngIf="mainForm.get('address.email').errors?.required">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+                                <div *ngIf="mainForm.get('address.email')?.errors?.email" class="alert">
+                                    Lütfen geçerli bir email adresi giriniz.
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label"> {{'PHONE_NUMBER' | translate}}<label
+                                    class="text-danger fs-6">*</label></label>
+                            <div class="row">
+                                <ngx-intl-tel-input [preferredCountries]="preferredCountries"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="false"
+                                    [searchCountryFlag]="true" [searchCountryField]="[
+                            SearchCountryField.Iso2,
+                            SearchCountryField.Name
+                          ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Sweden" 
+                                    [phoneValidation]="false" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" [searchCountryPlaceholder]="placeHolder"
+                                    formControlName="phoneNumber" name="phoneNumber">
+                                </ngx-intl-tel-input>
+
+                                <!-- <input type="text" class="form-control" formControlName="phoneNumber"
+                                    placeholder="Telefon Numarası"> -->
+                            </div>
+                            <div *ngIf="mainForm.get('address.phoneNumber')?.invalid &&  mainForm.get('address.phoneNumber')?.touched"
+                                class="alert">
+                                <div *ngIf="mainForm.get('address.phoneNumber')?.errors?.required" class="alert">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" (click)="nextTab(1)" [disabled]="!checkForm(mainForm,2)">
+                    <div *ngIf="!checkForm(mainForm,2)">*İlerlemek için zorunlu alanları doldurunuz</div>
+                    <div *ngIf="checkForm(mainForm,2)">İlerle</div>
+                </button>
+            </form>
+
+        </div>
+        <div class="tab__content">
+            <h3 class="form-title">Eş Bilgileri</h3>
+            <form class="row col md-12" [formGroup]="spouseForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Adı</label>
+                        <input type="text" class="form-control" formControlName="firstName" placeholder="Adı">
+                        <div *ngIf="spouseForm.get('firstName')?.invalid && (spouseForm.get('firstName').dirty || spouseForm.get('firstName').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Soyadı</label>
+                        <input type="text" class="form-control" formControlName="lastName" placeholder="Soyadı">
+                        <div *ngIf="spouseForm.get('lastName')?.invalid && (spouseForm.get('lastName').dirty || spouseForm.get('lastName').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">İsveç Personummer</label>
+                        <input type="text" class="form-control" formControlName="identificationNumber"
+                            placeholder="xxxxxx-xxxx" appIdentificationFormat maxlength="11">
+                        <div *ngIf="spouseForm.get('identificationNumber')?.invalid && (spouseForm.get('identificationNumber').dirty || spouseForm.get('identificationNumber').touched)"
+                            class="alert">
+                            <div *ngIf="spouseForm.get('identificationNumber').errors?.required">
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                            </div>
+                            <div *ngIf=" spouseForm.get('identificationNumber')?.hasError('minlength') ">Eksik rakam
+                                girdiniz.</div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Doğum Yeri</label>
+
+                        <input type="text" class="form-control" formControlName="birthPlace" placeholder="Doğum Yeri">
+                        <div *ngIf="spouseForm.get('birthPlace')?.invalid && (spouseForm.get('birthPlace').dirty || spouseForm.get('birthPlace').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Doğum Tarihi</label>
+                        <input type="date" class="form-control" formControlName="birthDay" placeholder="Doğum Tarihi">
+                        <div *ngIf="spouseForm.get('birthDay')?.invalid && (spouseForm.get('birthDay').dirty || spouseForm.get('birthDay').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Uyruk</label>
+
+                        <select formControlName="nationality" name="nationality" class="form-control">
+                            <option value="" selected disabled>Seçiniz</option>
+                            <option *ngFor="let item of nationality" [ngValue]="item.name">
+                                {{item.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="spouseForm.get('nationality')?.invalid && (spouseForm.get('nationality').dirty || spouseForm.get('nationality').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Cinsiyet</label>
+                        <select formControlName="genderId" name="genderId" class="form-control">
+                            <option value="" selected disabled>Seçiniz</option>
+                            <option *ngFor="let item of gender" [ngValue]="item.id">{{item.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="spouseForm.get('genderId')?.invalid && (spouseForm.get('genderId').dirty || spouseForm.get('genderId').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                        </div>
+
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" (click)="nextTab(2)">İlerle
+                </button>
+
+            </form>
+
+        </div>
+        <div class="tab__content">
+            <div style="display: flex; align-items: center;">
+                <h3 class="form-title">Çocuk Bilgileri </h3>
+                <div>&nbsp; (18 yaşından küçük bekar çocuklar)</div>
+            </div>
+            <form class="row col md-12" [formGroup]="memberForm">
+
+                <div class="row" formArrayName="familyMembers">
+                    <div *ngFor="let item of familyMembers.controls; let i=index">
+                        <div class="row" [formGroupName]="i">
+                            <h3>{{i+1+'.'}}</h3>
+                            <div class="col-md-6">
+                                <label class="form-label">Ad</label>
+                                <input type="text" class="form-control" formControlName="firstName" placeholder="Ad">
+                                <div *ngIf="item.get('firstName')?.invalid && (item.get('firstName').dirty || item.get('firstName').touched)"
+                                    class="alert">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Soyad</label>
+                                <input type="text" class="form-control" formControlName="lastName" placeholder="Soyad">
+                                <div *ngIf="item.get('lastName')?.invalid && (item.get('lastName').dirty || item.get('lastName').touched)"
+                                    class="alert">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">İsveç Personummer</label>
+                                <input type="text" class="form-control" formControlName="identificationNumber"
+                                    placeholder="xxxxxx-xxxx" appIdentificationFormat maxlength="11">
+                                <div *ngIf="item.get('identificationNumber')?.invalid && (item.get('identificationNumber').dirty || item.get('identificationNumber').touched)"
+                                    class="alert">
+                                    <div *ngIf="item.get('identificationNumber').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                    <div *ngIf=" item.get('identificationNumber')?.hasError('minlength') ">Eksik rakam
+                                        girdiniz.</div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Cinsiyet</label>
+                                <select formControlName="genderId" name="genderId" class="form-control">
+                                    <option value="" selected disabled>Seçiniz</option>
+                                    <option *ngFor="let item of gender" [ngValue]="item.id">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="item.get('genderId')?.invalid && (item.get('genderId').dirty || item.get('genderId').touched)"
+                                    class="alert">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="form-label">Doğum Tarihi</label>
+                                <input type="date" class="form-control" formControlName="birthDay"
+                                    placeholder="Doğum Tarihi">
+                                <div *ngIf="item.get('birthDay')?.invalid && (item.get('birthDay').dirty || item.get('birthDay').touched)"
+                                    class="alert">
+                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button type="button" class="btn btn-primary" (click)="addNewFamilyMember()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-plus" viewBox="0 0 16 16">
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                        </svg>
+                        Çocuk Ekle
+                    </button>
+                </div>
+
+
+
+
+            </form>
+
+            <div class="col-md-6" style="display: flex; ">
+                <input type="checkbox" [(ngModel)]="isAgreed">
+                <label style="margin-left: 7px;"> <a routerLink="/login/specification" target="_blank">
+                        Cenaze
+                        Fonu Şartnamesini</a>
+                    okudum, onaylıyorum.<label class="text-danger fs-6">*</label></label>
+
+            </div>
+            <form class="row col md-12">
+                <button [disabled]="isLoadingButton || !this.checkForm(mainForm,3) || !isAgreed" (click)="saveForm()"
+                    class="btn btn-primary " type="button">
+                    <i class="fas fa-save"></i>
+
+                    <span *ngIf="!isLoadingButton">{{'SAVE'
+                        |translate}}</span>
+                    <span *ngIf="isLoadingButton">
+                        <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+                    </span>
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+,

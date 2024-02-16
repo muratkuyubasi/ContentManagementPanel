@@ -1,0 +1,101 @@
+<div class="row align-items-center justify-content-between">
+  <div class="col-md-auto col-sm-auto">
+    <div class="content-header">
+      <h1>{{ ('CITY' | translate) }}</h1>
+    </div>
+  </div>
+
+</div>
+<div class="add-listing-box mb-30">
+  <section class="listing-area mb-30">
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="basic" role="tabpanel">
+        <h3 class="form-title">{{'ADD_CITY' | translate}}</h3>
+        <form class="row" [formGroup]="frontForm">
+          <div class="row">
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label> {{'NAME' | translate}}</label>
+                <input type="text" class="form-control" formControlName="name" placeholder="{{'NAME' | translate}}">
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2">
+              <div class="form-group">
+                <label> {{'LONGITUDE' | translate}}</label>
+                <input type="number" class="form-control" formControlName="longitude"
+                  placeholder="{{'LONGITUDE' | translate}}">
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2">
+              <div class="form-group">
+                <label> {{'LATITUDE' | translate}}</label>
+                <input type="number" class="form-control" formControlName="latitude"
+                  placeholder="{{'LATITUDE' | translate}}">
+              </div>
+            </div>
+
+          </div>
+        </form>
+        <div class="m-top-10 col-md-12">
+          <ng-container>
+            <button [disabled]="isLoadingButton" (click)="save()" cdkFocusInitial
+              class="btn btn-success btn-sm m-right-10" type="button">
+              <i class="fas fa-save"></i>
+              <span *ngIf="!isLoadingButton">{{'SAVE' |translate}}</span>
+              <span *ngIf="isLoadingButton">
+                <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+              </span>
+            </button>
+          </ng-container>
+
+
+          <button type="button" class="btn btn-danger btn-sm" [routerLink]="['/menus/prayer-time']"><i
+              class="fas fa-times-circle"></i>
+            {{'CANCEL' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <div class="box box-primary">
+    <div class="box-body">
+      <div class="table-container table">
+        <table mat-table [dataSource]="cities">
+         
+          <ng-container matColumnDef="action">
+            <th style="width:30%" mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
+            <td style="width:30%" mat-cell *matCellDef="let cities">
+              <button (click)="manage(cities)"  class="btn btn-success btn-sm m-right-10" type="button">
+                <i class="fas fa-pencil-alt"></i>
+                <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+              </button>
+              <button (click)="delete(cities)" class="btn btn-danger btn-sm" type="button">
+                <i class="fas fa-trash-alt"></i>
+                <span class="d-none d-sm-inline">{{ 'DELETE' | translate }}</span>
+              </button>
+            </td>
+          </ng-container>
+  
+        
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ 'NAME' | translate }}</th>
+            <td mat-cell *matCellDef="let cities">{{ cities?.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="longitude">
+            <th mat-header-cell *matHeaderCellDef>{{ 'LONGITUDE' | translate }}</th>
+            <td mat-cell *matCellDef="let cities">{{ cities?.longitude }}</td>
+          </ng-container>
+          <ng-container matColumnDef="latitude">
+            <th mat-header-cell *matHeaderCellDef>{{ 'LATITUDE' | translate }}</th>
+            <td mat-cell *matCellDef="let cities">{{ cities?.latitude }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div> -->
+
+</div>

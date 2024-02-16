@@ -1,0 +1,533 @@
+<div class="row align-items-center justify-content-between">
+    <div class="col-md-auto col-sm-auto">
+        <div class="content-header">
+            <h1>{{'FAMILY_DETAIL' | translate }} {{member?.memberId}}</h1>
+        </div>
+    </div>
+    <div class="col-md-auto col-sm-auto" style="display: flex;">
+
+        <h4 class="widget-title" *ngIf="headOfFamily?.length>0">
+
+            <button *hasClaim="'funeral_fund_add'" class="btn btn-success btn-sm m-right-10"
+                [routerLink]="['/funeral-fund/add-person',familyId]">
+                <i class="fas fa-plus"></i> {{'ADD_PERSON' | translate}} </button>
+
+            <ng-container *ngIf="headOfFamily?.length>0 && spouse?.length>0">
+                <button *hasClaim="'funeral_fund_edit'" (click)="manageDivorce(member)"
+                    class="btn btn-dark btn-sm m-right-10">
+                    <i class="fa-sharp fa-solid fa-people-arrows"></i> {{'DIVORCE_SITUATION' | translate}} </button>
+            </ng-container>
+            <button [disabled]="isLoadingButton" *hasClaim="'funeral_fund_delete'" (click)="deleteFamily(member)"
+                class="btn btn-danger btn-sm" type="button">
+                <i class="fa-sharp fa-regular fa-users-slash"></i>
+                <span *ngIf="!isLoadingButton">{{ 'DELETE_FAMILY' | translate }}</span>
+                <span *ngIf="isLoadingButton">
+                    <i class="fa fa-spinner fa-spin"></i> {{'DELETING' | translate}}
+                </span>
+            </button>
+
+            <button class="btn btn-danger btn-sm" *hasClaim="'send_email_list'"
+                [routerLink]="['/send-email/email',member?.address?.email]" type="button"
+                style="background-color: rebeccapurple;">
+                <i class="fa-solid fa-envelope"></i>
+                <span>{{ 'SEND_MAIL' | translate }}</span>
+            </button>
+
+        </h4>
+
+    </div>
+</div>
+
+<div class="loading-shade" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+
+
+<div class="wrapper-info-box" *ngIf="headOfFamily?.length===0 || headOfFamily===[]">
+    <div class="message-box info-message-box">
+        <div class="message-box-icon scale-animation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                    d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z" />
+            </svg>
+        </div>
+        <div class="message-box-text">
+            <b> Bu ailede üye bulunmamaktadır. Bu ailede <b *ngIf="death?.length>0">{{death?.length}} üye vefat etmiş.
+                </b>
+                <b *ngIf="deletedMember?.length>0">{{deletedMember?.length}} üye
+                    silinmiş.</b></b>
+        </div>
+    </div>
+
+</div>
+
+<div class="add-listing-box mb-30" *ngIf="headOfFamily?.length>0">
+    <section class="listing-area mb-30">
+
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="table-container table">
+                    <table class="mat-table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>{{ 'PERSON' | translate }}</th>
+                                <th>{{ 'FULL_NAME' | translate }}</th>
+                                <th>{{ 'SWEDEN_IDENTIFICATION_NUMBER' | translate }}</th>
+                                <th>{{ 'GENDER' | translate }}</th>
+                                <th>{{ 'BIRTHDATE' | translate }}</th>
+                                <th>{{ 'BIRTH_PLACE' | translate }}</th>
+                                <th>{{ 'NATIONALITY' | translate }}</th>
+                                <th>{{ 'ACTION' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ "AİLE REİSİ" }}</td>
+                                <td>{{ headOfFamily[0]?.memberUser?.firstName | uppercase }} {{
+                                    headOfFamily[0]?.memberUser?.lastName | uppercase }}
+                                </td>
+                                <td>{{ headOfFamily[0]?.memberUser?.identificationNumber }}</td>
+                                <td>{{ headOfFamily[0]?.memberUser?.genderId === 1 ? 'KADIN' :
+                                    (headOfFamily[0]?.memberUser?.genderId === 2 ? 'ERKEK' :' ') }}</td>
+                                <td>{{ headOfFamily[0]?.memberUser?.birthDay | date:'dd-MM-YYYY' }}</td>
+                                <td>{{ headOfFamily[0]?.memberUser?.birthPlace |uppercase }}</td>
+                                <td>{{ headOfFamily[0]?.memberUser?.nationality | uppercase}}</td>
+                                <td>
+                                    <button (click)="getId(headOfFamily[0]?.memberUser?.id)"
+                                        *hasClaim="'funeral_fund_edit'" class="btn btn-success btn-sm m-right-10" type
+                                        of="button">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+                                    </button>
+
+                                    <button class="btn btn-secondary btn-sm" type="button"
+                                        *hasClaim="'funeral_fund_edit'"
+                                        [routerLink]="['/funeral-fund/deceased-members-manage',headOfFamily[0]?.memberUser?.id,member.memberId]">
+                                        <i class="fa-solid fa-tombstone-blank"
+                                            style="color: #ffffff; margin-right:7px;"></i>
+                                        <span class="d-none d-sm-inline">{{ 'MARK_AS_DECEASED' | translate }}</span>
+                                    </button>
+
+                                    <!-- <ng-container *hasClaim="'funeral_fund_delete'">
+                                        <button *ngIf="loadingId != headOfFamily[0]?.memberUser?.id"
+                                            (click)="deleteFamilyMember(headOfFamily[0]?.memberUser?.id)"
+                                            class="btn btn-danger btn-sm" type="button">
+                                            <i class="fas fa-trash-alt"></i>
+                                            {{ 'DELETE_MEMBER' | translate }}
+                                        </button>
+                                    </ng-container>
+                                    <button disabled *ngIf="loadingId == headOfFamily[0]?.memberUser?.id"
+                                        class="btn btn-danger btn-sm" type="button">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span *ngIf="loadingId == headOfFamily[0]?.memberUser?.id && isLoadingButton">
+                                            <i class="fa fa-spinner fa-spin"></i>{{'DELETING' | translate}}
+                                        </span>
+                                    </button> -->
+
+
+
+
+                                </td>
+                            </tr>
+                            <tr *ngIf="spouse.length>0">
+                                <td>{{ "EŞ" }}</td>
+                                <td>{{ spouse[0]?.memberUser?.firstName | uppercase }} {{
+                                    spouse[0]?.memberUser?.lastName |
+                                    uppercase }}
+                                </td>
+                                <td>{{ spouse[0]?.memberUser?.identificationNumber }}</td>
+                                <td>{{ spouse[0]?.memberUser?.genderId === 1 ? 'KADIN' :
+                                    (spouse[0]?.memberUser?.genderId === 2 ? 'ERKEK' :' ') }}</td>
+                                <td>{{ spouse[0]?.memberUser?.birthDay | date:'dd-MM-YYYY' }}</td>
+                                <td>{{ spouse[0]?.memberUser?.birthPlace |uppercase}}</td>
+                                <td>{{ spouse[0]?.memberUser?.nationality |uppercase}}</td>
+                                <td>
+
+
+                                    <button (click)="getId(spouse[0]?.memberUser?.id) " *hasClaim="'funeral_fund_edit'"
+                                        class="btn btn-success btn-sm m-right-10" type of="button">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+                                    </button>
+
+
+                                    <button [disabled]="headOfFamilyLoading" *hasClaim="'funeral_fund_edit'"
+                                        (click)="updateFamilyHead(spouse[0])" class="btn btn-warning btn-sm"
+                                        type="button">
+                                        <i class="fa-sharp fa-regular fa-user-crown fa-lg"
+                                            style="margin-right: 7px; color:black"></i>
+                                        <span *ngIf="!headOfFamilyLoading"> {{ 'MARK_AS_HEAD_OF_FAMILY' |
+                                            translate}}</span>
+                                        <span *ngIf="headOfFamilyLoading">
+                                            <i class="fa fa-spinner fa-spin"></i> {{'UPDATING'|translate}}
+                                        </span>
+                                    </button>
+
+                                    <button class="btn btn-secondary btn-sm" type="button"
+                                        *hasClaim="'funeral_fund_edit'"
+                                        [routerLink]="['/funeral-fund/deceased-members-manage',spouse[0].memberUser?.id,member.memberId]">
+                                        <i class="fa-solid fa-tombstone-blank"
+                                            style="color: #ffffff; margin-right:7px;"></i>
+                                        <span class="d-none d-sm-inline">{{ 'MARK_AS_DECEASED' | translate }}</span>
+                                    </button>
+
+                                    <button *hasClaim="'funeral_fund_delete'" [disabled]="loadingMemberDelete"
+                                        (click)="deleteFamilyMember(spouse[0]?.memberUser?.id)"
+                                        class="btn btn-danger btn-sm" type="button">
+                                        <i class="fa-sharp fa-solid fa-user-minus"></i>
+                                        <span *ngIf="!loadingMemberDelete"> {{ 'DELETE_MEMBER' | translate }}</span>
+                                        <span *ngIf="loadingMemberDelete">
+                                            <i class="fa fa-spinner fa-spin"></i>{{'DELETING' | translate}}
+                                        </span>
+                                    </button>
+
+
+                                </td>
+                            </tr>
+                            <tr *ngIf="children.length>0">
+                            <tr *ngFor="let child of children">
+                                <td>{{ "ÇOCUK" }}</td>
+                                <td>{{ child?.memberUser?.firstName | uppercase }} {{
+                                    child?.memberUser?.lastName |
+                                    uppercase
+                                    }}</td>
+                                <td>{{ child?.memberUser?.identificationNumber }}</td>
+                                <td>{{ child?.memberUser?.genderId === 1 ? 'KADIN' : (child?.memberUser?.genderId === 2
+                                    ? 'ERKEK' :' ') }}</td>
+                                <td>{{ child?.memberUser?.birthDay | date:'dd-MM-YYYY' }}</td>
+                                <td>{{ child?.memberUser?.birthPlace | uppercase}}</td>
+                                <td></td>
+                                <td>
+
+                                    <button (click)="getId(child?.memberUser?.id)" *hasClaim="'funeral_fund_edit'"
+                                        class="btn btn-success btn-sm m-right-10" type of="button">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+                                    </button>
+
+                                    <button *hasClaim="'funeral_fund_edit'"
+                                        [routerLink]="['/funeral-fund/deceased-members-manage',child.memberUser?.id,member.memberId]"
+                                        class="btn btn-secondary btn-sm" type="button">
+                                        <i class="fa-solid fa-tombstone-blank"
+                                            style="color: #ffffff; margin-right:7px;"></i>
+                                        {{ 'MARK_AS_DECEASED' | translate }}
+                                    </button>
+
+                                    <button *hasClaim="'funeral_fund_delete'"
+                                        [disabled]="loadingId == child?.memberUser?.id"
+                                        (click)="deleteFamilyMember(child?.memberUser?.id)"
+                                        class="btn btn-danger btn-sm" type="button">
+                                        <i class="fa-sharp fa-solid fa-user-minus"></i>
+                                        <span *ngIf="loadingId != child?.memberUser?.id"> {{ 'DELETE_MEMBER' | translate
+                                            }}</span>
+                                        <span *ngIf="loadingId == child?.memberUser?.id">
+                                            <i class="fa fa-spinner fa-spin"></i>{{'DELETING' | translate}}
+                                        </span>
+                                    </button>
+
+                                    <!-- <ng-container *hasClaim="'funeral_fund_delete'">
+                                        <button *ngIf="loadingId != child?.memberUser?.id"
+                                            (click)="deleteFamilyMember(child?.memberUser?.id)"
+                                            class="btn btn-danger btn-sm" type="button">
+                                            <i class="fas fa-trash-alt"></i>
+                                            {{ 'DELETE_MEMBER' | translate }}
+                                        </button>
+                                    </ng-container>
+
+                                    <button disabled *ngIf="loadingId == child?.memberUser?.id"
+                                        class="btn btn-danger btn-sm" type="button">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span *ngIf="loadingId == child?.memberUser?.id && isLoadingButton">
+                                            <i class="fa fa-spinner fa-spin"></i>{{'DELETING' | translate}}
+                                        </span>
+                                    </button> -->
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<div class="info-boxes">
+    <div class="address-box">
+        <table class="address-table ">
+            <thead>
+                <tr>
+                    <th colspan="2">{{ 'ADDRESS_INFORMATION' | translate }}</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>{{ 'DISTRICT' | translate }}</th>
+                <td>{{ member?.address?.district | uppercase }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'POST_CODE' | translate }}</th>
+                <td>{{ member?.address?.postCode | uppercase }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'STREET' | translate }}</th>
+                <td>{{ member?.address?.street | uppercase }}</td>
+            </tr>
+            <br>
+            <thead>
+                <tr>
+                    <th colspan="2">{{ 'CONTACT_INFORMATION' | translate }}</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>{{ 'PHONE_NUMBER' | translate }}</th>
+                <td>{{ member?.address?.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'EMAIL' | translate }}</th>
+                <td>{{ member?.address?.email}}</td>
+            </tr>
+            <thead>
+                <button [routerLink]="['/funeral-fund/edit-address',familyId]" class="btn btn-success btn-sm"
+                    type="button">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+                </button>
+            </thead>
+        </table>
+    </div>
+
+    <div class="address-box">
+        <table class="address-table">
+            <thead>
+                <tr>
+                    <th colspan="6">{{ 'PAID_INVOICES' | translate }}</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>{{ 'AMOUNT' | translate }}</th>
+                <th>{{ 'BILL_TYPE' | translate }}</th>
+                <th>{{ 'BILL_NUMBER' | translate }}</th>
+                <th>{{ 'INVOICE_DATE' | translate }}</th>
+                <th>{{ 'PAYMENT_DATE' | translate }}</th>
+
+
+            </tr>
+
+
+            <ng-container *ngIf="paid.length>0" style="overflow: auto;">
+                <tr *ngFor="let item of paid">
+                    <td>{{ item?.amount}}</td>
+                    <td>{{ item?.debtorType?.name }}</td>
+
+                    <td>{{ item?.debtorNumber}}</td>
+                    <td>{{ item?.creationDate | date:'YYYY' }}</td>
+                    <td>{{ item?.paymentDate | date:'dd-MM-YYYY' }}</td>
+
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="paid?.length==0">
+                {{'NO_DATA_FOUND' | translate}}
+            </ng-container>
+
+
+        </table>
+    </div>
+
+    <div class="address-box">
+        <table class="address-table">
+            <thead>
+                <tr>
+                    <th colspan="6">{{ 'UNPAYED_INVOICES' | translate }}
+                        <button *hasClaim="'funeral_fund_add'" class="btn btn-success btn-sm" type="button"
+                            (click)="manageBills(familyId)">
+                            <i class="fas fa-plus"></i>
+                            <span class="d-none d-sm-inline">{{ 'ADD' | translate }}</span>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+
+            <tr>
+                <th>{{ 'AMOUNT' | translate }}</th>
+                <th>{{ 'BILL_TYPE' | translate }}</th>
+                <th>{{ 'BILL_NUMBER' | translate }}</th>
+                <th>{{ 'INVOICE_DATE' | translate }}</th>
+                <th>{{ 'PAYMENT_DEADLINE' | translate }}</th>
+                <th>{{ 'ACTION' | translate }}</th>
+            </tr>
+
+            <ng-container *ngIf="unpaid.length>0" style="overflow: auto;">
+                <tr *ngFor="let item of unpaid">
+                    <td>{{ item?.amount}}</td>
+                    <td>{{ item?.debtorType?.name }}</td>
+                    <td>{{ item?.debtorNumber}}</td>
+                    <td>{{ item?.creationDate | date:'YYYY' }}</td>
+                    <td>{{ item?.dueDate | date:'dd-MM-YYYY' }}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" [matMenuTriggerFor]="menu" aria-label="Action">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button (click)="paidBills(familyId,item.debtorNumber)" *hasClaim="'funeral_fund_edit'"
+                                mat-menu-item class="btn btn-info btn-sm m-right-10" type="button">
+                                <i class="fa-regular fa-money-check-pen"></i>
+                                <span class="d-none d-sm-inline">{{ 'MARK_AS_PAID' | translate
+                                    }}</span>
+                            </button>
+                            <button (click)="sendEmail(item.debtorType.name,familyId,item.debtorNumber)"
+                                *hasClaim="'funeral_fund_edit'" mat-menu-item class="btn btn-info btn-sm m-right-10"
+                                type="button">
+                                <i class="fa-solid fa-envelope" style="color:black"></i>
+                                <span class="d-none d-sm-inline">{{ 'SEND_MAIL_BILL' | translate
+                                    }}</span>
+                            </button>
+
+                            <button (click)="viewBill(familyId,item.debtorNumber)" *hasClaim="'funeral_fund_list'"
+                                mat-menu-item class="btn btn-info btn-sm m-right-10" type="button">
+                                <i class="fa-regular fa-file-invoice fa-lg"></i>
+                                <span class="d-none d-sm-inline">{{ 'VIEW_BILL' | translate
+                                    }}</span>
+                            </button>
+                            <button (click)="manageBills(familyId,item)" *hasClaim="'funeral_fund_edit'" mat-menu-item
+                                class="btn btn-info btn-sm m-right-10" type="button">
+                                <i class="fa-duotone fa-file-pen fa-lg"></i>
+                                <span class="d-none d-sm-inline">{{ 'UPDATE_BILL' | translate
+                                    }}</span>
+                            </button>
+                            <button (click)="deleteBill(familyId,item.debtorNumber)" *hasClaim="'funeral_fund_list'"
+                                mat-menu-item class="btn btn-info btn-sm m-right-10" type="button">
+                                <i class="fa-solid fa-file-slash "></i>
+                                <span class="d-none d-sm-inline">{{ 'DELETE_BILL' | translate
+                                    }}</span>
+                            </button>
+                        </mat-menu>
+
+                    </td>
+                </tr>
+
+            </ng-container>
+
+            <ng-container *ngIf="unpaid?.length==0">
+                {{'NO_DATA_FOUND' | translate}}
+            </ng-container>
+
+        </table>
+    </div>
+
+
+
+
+</div>
+
+
+<div class="info-boxes">
+    <div class="address-box">
+        <table class="address-table">
+            <thead>
+                <tr>
+                    <th>{{ 'NOTES' | translate }}</th>
+                </tr>
+            </thead>
+        </table>
+        <form [formGroup]="noteForm">
+
+            <textarea style="overflow: auto;" cols="61" rows="13" formControlName="text"
+                placeholder="Veri bulunamadı"> </textarea>
+        </form>
+        <button [disabled]="isLoadingNotes" (click)="addNotes()" *hasClaim="'funeral_fund_edit'"
+            class="btn btn-success btn-sm" type="button">
+            <i class="fas fa-save"></i>
+            <span *ngIf="!isLoadingNotes">{{'SAVE' |translate}}</span>
+            <span *ngIf="isLoadingNotes">
+                <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+            </span>
+        </button>
+
+    </div>
+
+    <div class="address-box">
+        <table class="address-table">
+            <thead>
+                <tr>
+                    <th colspan="4">{{ 'DECEASED_MEMBERS' | translate }}</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>{{ 'FULL_NAME' | translate }}</th>
+                <th>{{ 'PERSON' | translate }}</th>
+                <th>{{ 'DEATH_DATE' | translate }}</th>
+                <th>{{ 'ACTION' | translate }}</th>
+
+
+            </tr>
+
+            <ng-container *ngIf="death.length>0" style="overflow: auto;">
+                <tr *ngFor="let item of death">
+                    <td>{{ item?.memberUser?.firstName | uppercase}} {{ item?.memberUser?.lastName | uppercase}}</td>
+                    <td>{{ item?.memberUser?.memberTypeId === 1 ? 'Aile Reisi' : (item?.memberUser?.memberTypeId === 2 ?
+                        'Eş' : (item?.memberUser?.memberTypeId === 3 ? 'Çocuk' : '')) }}</td>
+                    <td>{{ item?.memberUser?.dateOfDeath | date:'dd-MM-YYYY' }}</td>
+                    <td>
+                        <button
+                            [routerLink]="['/funeral-fund/deceased-members-manage',item.memberUser?.id,member.memberId]"
+                            *hasClaim="'funeral_fund_edit'" class="btn btn-success btn-sm m-right-10" type of="button">
+                            <i class="fas fa-pencil-alt"></i>
+                            <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+                        </button>
+                    </td>
+
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="death?.length==0">
+                {{'NO_DATA_FOUND' | translate}}
+            </ng-container>
+
+        </table>
+    </div>
+
+    <div class="address-box pdf-container" *ngIf="showMemberCard==true">
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- <div class="info-boxes">
+    <div class="address-box">
+        <table class="address-table">
+            <thead>
+                <tr>
+                    <th colspan="2">{{ 'DELETED_MEMBERS' | translate }}</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>{{ 'FULL_NAME' | translate }} </th>
+                <th>{{ 'PERSON' | translate }}</th>
+
+
+            </tr>
+
+            <ng-container *ngIf="deletedMember.length>0" style="overflow: auto;">
+                <tr *ngFor="let item of deletedMember">
+                    <td>{{ item?.memberUser?.firstName | uppercase}} {{ item?.memberUser?.lastName | uppercase}}</td>
+                    <td>{{ item?.memberUser?.memberTypeId === 1 ? 'Aile Reisi' : (item?.memberUser?.memberTypeId === 2 ?
+                        'Eş' : (item?.memberUser?.memberTypeId === 3 ? 'Çocuk' : '')) }}</td>
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="deletedMember?.length==0">
+                {{'NO_DATA_FOUND' | translate}}
+            </ng-container>
+
+        </table>
+    </div>
+
+
+
+
+</div> -->

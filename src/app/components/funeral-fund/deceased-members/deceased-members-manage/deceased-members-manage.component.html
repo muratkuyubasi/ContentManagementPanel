@@ -1,0 +1,118 @@
+<div class="row align-items-center justify-content-between">
+    <div class="col-md-auto col-sm-auto">
+        <div class="content-header">
+            <h1>{{ ('INFORMATION' | translate)}}</h1>
+        </div>
+    </div>
+
+</div>
+<div class="add-listing-box mb-30">
+    <section class="listing-area mb-30">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                <table class="mat-table">
+                    <thead class="table-primary" style="background-color: var(--bs-table-bg);">
+                        <tr>
+                            <th>{{ 'MEMBER_NO' | translate }}</th>
+                            <th>{{ 'FULL_NAME' | translate }}</th>
+                            <th>{{ 'SWEDEN_IDENTIFICATION_NUMBER' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{memberId}}</td>
+                            <td>{{member?.firstName | uppercase }} {{
+                                member?.lastName | uppercase }}
+                            </td>
+                            <td>{{member?.identificationNumber }}</td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+                &nbsp;
+                <div style="display:flex; justify-content: flex-start;">
+                    <div class="address-box" style="height: 473px;">
+                        <table class="address-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">{{ 'INFORMATION' | translate }}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        &nbsp;
+                        <form [formGroup]="deathForm">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>{{"DEATH_DATE" | translate}}</label>
+                                    <input formControlName="dateOfDeath" type="date" class="form-control">
+                                    <div *ngIf="deathForm.get('dateOfDeath')?.invalid && (deathForm.get('dateOfDeath')?.dirty || deathForm.get('dateOfDeath')?.touched)"
+                                    class="alert">
+                                    <div *ngIf="deathForm.get('dateOfDeath')?.errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>{{"BURIAL_PLACE" | translate}}</label>
+                                    <input formControlName="burialPlace" type="text" class="form-control"
+                                        placeholder="-">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>{{"PLACE_OF_DEATH" | translate}}</label>
+                                    <input formControlName="placeOfDeath" type="text" class="form-control"
+                                        placeholder="-">
+                                </div>
+                            </div>
+
+                        </form>
+                        <ng-container>
+                            <button [disabled]="isLoadingButton ||deathForm.invalid" (click)="markAsDeceased()"
+                                cdkFocusInitial class="btn btn-success btn-sm m-right-10" type="button">
+                                <i class="fas fa-save"></i>
+                                <span *ngIf="!isLoadingButton">{{'SAVE' |translate}}</span>
+                                <span *ngIf="isLoadingButton">
+                                    <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+                                </span>
+                            </button>
+                        </ng-container>
+
+
+                    </div>
+                    <div class="address-box" style="height: 473px;">
+                        <table class="address-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">{{ 'NOTES' | translate }}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <form [formGroup]="noteForm">
+
+                            <textarea style="overflow: auto;" cols="61" rows="14" formControlName="text"
+                                placeholder="Veri bulunamadı"> </textarea>
+                        </form>
+                        <button [disabled]="isLoadingNotes" (click)="addNotes()" *hasClaim="'funeral_fund_edit'"
+                            class="btn btn-success btn-sm" type="button">
+                            <i class="fas fa-save"></i>
+                            <span *ngIf="!isLoadingNotes">{{'SAVE' |translate}}</span>
+                            <span *ngIf="isLoadingNotes">
+                                <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+</div>

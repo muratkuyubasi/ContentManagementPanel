@@ -1,0 +1,56 @@
+<div class="row align-items-center justify-content-between">
+  <div class="col-md-auto col-sm-auto">
+    <div class="content-header">
+      <h1> {{ 'ROOM_TYPES' | translate }}</h1>
+    </div>
+  </div>
+  <div class="col-md-auto col-sm-auto">
+    <h4 class="widget-title">
+      <button class="btn btn-success btn-sm m-right-10" (click)="manageRoomTypes()">
+        <i class="fas fa-plus"></i>
+        {{ 'ADD_ROOM_TYPES' | translate }}
+      </button>
+    </h4>
+  </div>
+</div>
+
+<div class="loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="box box-primary">
+  <div class="box-body">
+    <div class="table-container table">
+      <table mat-table [dataSource]="roomTypes">
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th style="width:30%" mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
+          <td style="width:30%" mat-cell *matCellDef="let roomTypes;let i=index;">
+            <button (click)="manageRoomTypes(roomTypes)" class="btn btn-success btn-sm m-right-10" type="button">
+              <i class="fas fa-pencil-alt"></i>
+              <span class="d-none d-sm-inline">{{ 'EDIT' | translate }}</span>
+            </button>
+
+            <button [disabled]="isLoadingButton[i]" (click)="deleteRoomTypes(roomTypes,i)" class="btn btn-danger btn-sm"
+              type="button">
+              <i class="fas fa-trash-alt"></i>
+              <span *ngIf="!isLoadingButton[i]">{{ 'DELETE' | translate }}</span>
+              <span *ngIf="isLoadingButton[i]">
+                <i class="fa fa-spinner fa-spin"></i>{{'DELETING' | translate}}
+              </span>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>{{ 'TITLE' | translate }}</th>
+          <td mat-cell *matCellDef="let roomTypes">{{ roomTypes.roomTypes }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

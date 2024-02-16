@@ -1,0 +1,134 @@
+<section class="login-area">
+    <div class="row m-0">
+        <div class="col-lg-6 col-md-12 p-0" style="background: url('assets/img/loginBackground.jpg'); display: flex;
+      justify-content: center; background-repeat: no-repeat; background-size: cover;">
+            <div class="login-image">
+                <img src="/assets/img/isvecdv.png" alt="image">
+                <!-- <div class="login-text">İSVEÇ DİYANET VAKFI</div> -->
+
+
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 p-0" [hidden]="showForm">
+            <div class="login-content tv">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="login-form">
+
+                            <button class="login-button" (click)="showLoginForm()">{{'LOGIN' |
+                                translate
+                                }}</button>
+                            <button routerLink="/register">{{'JOIN_THE_FUNERAL_FUND'
+                                | translate
+                                }}</button>
+                            <button (click)="showCalculateForm()">{{'CALCULATE_ENTRY_FEE' |
+                                translate }}</button>
+
+                            <a routerLink="/login/specification" target="_blank">
+                                <button>{{ 'FUNERAL_FUND_SPECIFICATION' | translate }}</button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 p-0" [ngStyle]="{'display': showForm === 'login' ? 'block' : 'none'}">
+            <div class="login-content tv">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="login-form">
+
+                            <h3>Cenaze Fonu Giriş Paneli</h3>
+                            <p>Lütfen üye numaranızı ve şifrenizi giriniz.</p>
+
+                            <form [formGroup]="loginFormGroup">
+                                <div class="form-group mb-3">
+                                    <input formControlName="userName" placeholder="{{'MEMBER_NO' | translate }}"
+                                        class="form-control">
+                                    <div class="text-danger"
+                                        *ngIf="loginFormGroup.get('userName').errors?.required && loginFormGroup.get('userName').errors?.touched ">
+                                        {{'MEMBER_NO_IS_REQUIRED' | translate }}
+                                    </div>
+                                    <!-- <div class="text-danger" *ngIf="loginFormGroup.get('userName').errors?.email">
+                                        {{'PLEASE_ENTER_VALID_EMAIL' | translate }}
+                                    </div> -->
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <input [type]="fieldTextType ? 'text' : 'password'" formControlName="password"
+                                        placeholder=" {{'PASSWORD' | translate }}" class="form-control">
+
+
+                                    <div *ngIf="loginFormGroup.get('password').touched && loginFormGroup.get('password').errors?.required"
+                                        class="k-tooltip-validation">
+                                        <div class="text-danger"
+                                            *ngIf="loginFormGroup.get('password').errors?.required">
+                                            {{'PASSWORD_IS_REQUIRED' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" [disabled]="!loginFormGroup.valid"
+                                    (click)="onLoginSubmit()">{{'LOGIN' |
+                                    translate
+                                    }}</button>
+
+                                <button (click)="goBack()">{{'BACK' |
+                                    translate
+                                    }}</button>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-12 p-0" [ngStyle]="{'display': showForm === 'calculate' ? 'block' : 'none'}">
+            <div class="login-content tv">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="login-form">
+
+                            <h3>Giriş Ücreti Hesaplama</h3>
+                            <p>Lütfen doğum yılınızı giriniz.</p>
+
+                            <form>
+                                <div class="form-group mb-3">
+                                    <input type="number" #yearInput
+                                        placeholder="{{'BIRTH_YEAR' | translate }}" class="form-control"
+                                        (input)="calculateFee()">
+                                </div>
+
+                                <div class="card" *ngIf="entranceFree>0">
+                                    Giriş Ücretiniz: {{ entranceFree }} SEK
+                                </div>
+                                <div class="card" *ngIf="entranceFree==0">
+                                    Yaşınıza uygun bir ücret bulunamadı
+                                </div>
+
+                                <!-- <button [disabled]="!calculateForm.valid || isLoadingButton" (click)="calculateFee()">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span *ngIf="!isLoadingButton">{{'CALCULATE' | translate}}</span>
+                                    <span *ngIf="isLoadingButton">
+                                        <i class="fa fa-spinner fa-spin"></i> Hesaplanıyor...
+                                    </span>
+                                </button> -->
+
+                            </form>
+                            <button (click)="goBack()">{{'BACK' |
+                                translate
+                                }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

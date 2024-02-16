@@ -1,0 +1,120 @@
+<div class="login-wrap">
+
+
+    <img src="/assets/img/isvecdv.png" class="logo">
+
+    <div class="login-html">
+        <h5>Panele giriş yapmak için iletişim ve adres bilgilerinizi güncelleyin ve yeni şifrenizi belirleyin.</h5>
+        <input id="tab1" type="radio" name="tab" class="sign-in" checked><label for="tab1" class="tab">İLETİŞİM
+            BİLGİLERİ</label>
+        <input id="tab2" type="radio" name="tab" class="sign-up" [disabled]="!this.checkForm(contactForm)"><label
+            for="tab2" class="tab">ADRES BİLGİLERİ</label>
+        <div class="login-form">
+            <form [formGroup]="contactForm">
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label class="label">{{'NEW_PASSWORD'|translate}}<label
+                                class="text-danger fs-3">*</label></label>
+                        <input type="password" class="input" data-type="text" formControlName="password" placeholder="{{'NEW_PASSWORD'| translate}}">
+                        <div *ngIf="contactForm.get('password')?.invalid && (contactForm.get('password').dirty || contactForm.get('password').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="label">{{'EMAIL'|translate}}<label class="text-danger fs-3">*</label>
+                        </label>
+                        <input type="text" class="input" formControlName="email" placeholder="{{'EMAIL'| translate}}">
+                        <div *ngIf="contactForm.get('email')?.invalid && (contactForm.get('email').dirty || contactForm.get('email').touched)"
+                            class="alert">
+                            <div *ngIf="contactForm.get('email')?.errors?.required" class="alert">
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                            </div>
+
+                            <div *ngIf="contactForm.get('email')?.errors?.email" class="alert">
+                                Lütfen geçerli bir email adresi giriniz.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="group">
+                        <label class="label">{{'PHONE_NUMBER'|translate}}<label
+                                class="text-danger fs-3">*</label></label>
+
+                        <ngx-intl-tel-input [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="true"
+                            [enablePlaceholder]="false" [searchCountryFlag]="true" [searchCountryField]="[
+                            SearchCountryField.Iso2,
+                            SearchCountryField.Name,
+                            SearchCountryField.DialCode,
+                            SearchCountryField.All
+
+                          ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Sweden"
+                            [phoneValidation]="false" [separateDialCode]="separateDialCode"
+                            [numberFormat]="PhoneNumberFormat.National" [searchCountryPlaceholder]="searchPlaceHolder"
+                            formControlName="phoneNumber" name="phoneNumber" [customPlaceholder]="placeHolder">
+                        </ngx-intl-tel-input>
+
+
+                        <div *ngIf="contactForm.get('phoneNumber')?.invalid &&  contactForm.get('phoneNumber')?.touched"
+                            class="alert">
+                            <div *ngIf="contactForm.get('phoneNumber')?.errors?.required" class="alert">
+                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <button type="submit" class="button" (click)="nextTab(0)" [disabled]="!checkForm(contactForm)">
+                            <div *ngIf="!checkForm(contactForm)">*İlerlemek için zorunlu alanları doldurunuz</div>
+                            <div *ngIf="checkForm(contactForm)">İlerle</div>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form [formGroup]="addressForm">
+                <div class="sign-up-htm">
+                    <div class="group">
+                        <label class="label">{{'STREET'|translate}}<label class="text-danger fs-3">*</label></label>
+                        <input type="text" class="input" formControlName="street" placeholder="{{'STREET'| translate}}">
+                        <div *ngIf="addressForm.get('street')?.invalid && (addressForm.get('street').dirty || addressForm.get('street').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="label">{{'POST_CODE'|translate}}<label class="text-danger fs-3">*</label></label>
+                        <input type="text" class="input" data-type="text" formControlName="postCode" placeholder="{{'POST_CODE'| translate}}">
+                        <div *ngIf="addressForm.get('postCode')?.invalid && (addressForm.get('postCode').dirty || addressForm.get('postCode').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="label">{{'AREA'|translate}}<label class="text-danger fs-3">*</label></label>
+                        <input type="text" class="input" data-type="text" formControlName="district" placeholder="{{'AREA'| translate}}">
+                        <div *ngIf="addressForm.get('district')?.invalid && (addressForm.get('district').dirty || addressForm.get('district').touched)"
+                            class="alert">
+                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <button type="submit" class="button" (click)="save()"
+                            [disabled]="!this.checkForm(contactForm) || !this.checkForm(addressForm) || isLoading">
+                            <span *ngIf="!isLoading">{{'SAVE'|translate}}</span>
+                            <span *ngIf="isLoading">
+                                <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+                            </span>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

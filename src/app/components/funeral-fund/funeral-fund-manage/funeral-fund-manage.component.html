@@ -1,0 +1,457 @@
+<div class="row align-items-center justify-content-between">
+    <div class="col-md-auto col-sm-auto">
+        <div class="content-header">
+            <h1>{{'ADD_FAMILY' | translate }}</h1>
+        </div>
+    </div>
+
+</div>
+
+<div class="loading-shade" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="add-listing-box mb-30">
+    <section class="listing-area mb-30">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                <h3 class="form-title">{{'PERSONAL_INFORMATION' | translate}}</h3>
+                <form class="row" [formGroup]="mainForm">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'FIRST_NAME' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="firstName"
+                                    placeholder="{{'FIRST_NAME' | translate}}">
+                                <div *ngIf="mainForm.get('firstName')?.invalid && (mainForm.get('firstName').dirty || mainForm.get('firstName').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('firstName').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'LAST_NAME' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="lastName"
+                                    placeholder="{{'LAST_NAME' | translate}}">
+                                <div *ngIf="mainForm.get('lastName')?.invalid && (mainForm.get('lastName').dirty || mainForm.get('lastName').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('lastName').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'SWEDEN_IDENTIFICATION_NUMBER' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="identificationNumber"
+                                    placeholder="xxxxxx-xxxx" appIdentificationFormat maxlength="11">
+                                <div *ngIf="mainForm.get('identificationNumber')?.invalid && (mainForm.get('identificationNumber').dirty || mainForm.get('identificationNumber').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('identificationNumber').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                    <div
+                                        *ngIf=" mainForm.get('identificationNumber')?.hasError('minlength') ">
+                                        Eksik
+                                        rakam
+                                        girdiniz.</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-2">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'BIRTH_PLACE' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="birthPlace"
+                                    placeholder="{{'BIRTH_PLACE' | translate}}">
+                                <div *ngIf="mainForm.get('birthPlace')?.invalid && (mainForm.get('birthPlace').dirty || mainForm.get('birthPlace').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('birthPlace').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="form-group">
+                                <label><i class='bx bx-duplicate'></i> {{'GENDER' | translate}}</label>
+                                <select formControlName="genderId" name="genderId" class="form-control">
+                                    <option value="0" selected disabled>{{'CHOOSE' | translate}}</option>
+                                    <option *ngFor="let item of gender" [ngValue]="item.id"> {{item.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="mainForm.get('genderId')?.invalid && (mainForm.get('genderId').dirty || mainForm.get('genderId').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('genderId').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-2">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'NATIONALITY' | translate}}</label>
+                                <select formControlName="nationality" name="nationality" class="form-control">
+                                    <option value="0" selected disabled>{{'CHOOSE' | translate}}</option>
+                                    <option *ngFor="let item of nationality" [value]="item.name"> {{item.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="mainForm.get('nationality')?.invalid && (mainForm.get('nationality').dirty || mainForm.get('nationality').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('nationality').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 form-group">
+                            <div class="form-group">
+                                <label><i class='bx bx-user'></i> {{'BIRTHDATE' | translate}}</label>
+                                <input type="date" class="form-control" formControlName="birthDay"
+                                    placeholder="{{'BIRTHDATE' | translate}}">
+                                <div *ngIf="mainForm.get('birthDay')?.invalid && (mainForm.get('birthDay').dirty || mainForm.get('birthDay').touched)"
+                                    class="alert">
+                                    <div *ngIf="mainForm.get('birthDay').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h3 class="form-title">{{'ADDRESS' | translate}}</h3>
+                    <div formGroupName="address">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label><i class='bx bx-user'></i> {{'STREET' | translate}}</label>
+                                    <input type="text" class="form-control" formControlName="street"
+                                        placeholder="{{'STREET' | translate}}">
+                                    <div *ngIf="mainForm.get('address')?.get('street')?.invalid && (mainForm.get('address')?.get('street').dirty || mainForm.get('address')?.get('street').touched)"
+                                        class="alert">
+                                        <div *ngIf="mainForm.get('address')?.get('street').errors?.required">
+                                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label><i class='bx bx-user'></i> {{'POST_CODE' | translate}}</label>
+                                    <input type="text" class="form-control" formControlName="postCode"
+                                        placeholder="{{'POST_CODE' | translate}}">
+                                    <div *ngIf="mainForm.get('address')?.get('postCode')?.invalid && (mainForm.get('address')?.get('postCode').dirty || mainForm.get('address')?.get('postCode').touched)"
+                                        class="alert">
+                                        <div *ngIf="mainForm.get('address')?.get('postCode').errors?.required">
+                                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label> <i class='bx bx-user'></i> {{'DISTRICT' | translate}}</label>
+                                    <input type="text" class="form-control" formControlName="district"
+                                        placeholder="{{'DISTRICT' | translate}}">
+                                    <div *ngIf="mainForm.get('address')?.get('district')?.invalid && (mainForm.get('address')?.get('district').dirty || mainForm.get('address')?.get('district').touched)"
+                                        class="alert">
+                                        <div *ngIf="mainForm.get('address')?.get('district').errors?.required">
+                                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-2">
+                                <div class="form-group">
+                                    <label><i class='bx bx-user'></i> {{'EMAIL' | translate}}</label>
+                                    <input type="text" class="form-control" formControlName="email"
+                                        placeholder="{{'EMAIL' | translate}}">
+                                    <div *ngIf="mainForm.get('address')?.get('email')?.invalid && (mainForm.get('address')?.get('email').dirty || mainForm.get('address')?.get('email').touched)"
+                                        class="alert">
+                                        <div *ngIf="mainForm.get('address')?.get('email').errors?.required">
+                                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                        </div>
+                                        <div *ngIf="mainForm.get('address')?.get('email')?.errors?.email" class="alert">
+                                            Lütfen geçerli bir email adresi giriniz.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label> <i class='bx bx-user'></i> {{'PHONE_NUMBER' | translate}}</label>
+                                    <input type="text" class="form-control" formControlName="phoneNumber"
+                                        placeholder="{{'PHONE_NUMBER' | translate}}">
+                                    <div *ngIf="mainForm.get('address')?.get('phoneNumber')?.invalid && (mainForm.get('address')?.get('phoneNumber').dirty || mainForm.get('address')?.get('phoneNumber').touched)"
+                                        class="alert">
+                                        <div *ngIf="mainForm.get('address')?.get('phoneNumber').errors?.required">
+                                            {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-flex gap-2 mb-3">
+                    <button type="button" class="btn btn-primary" (click)="spouseFormShow()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-plus" viewBox="0 0 16 16">
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                        </svg>
+                        Eş Bilgisi Ekle
+                    </button>
+                </div>
+
+
+                <div [ngStyle]="showSpouseForm==true? {'display':'block'} :  {'display':'none'}">
+                    <h3 class="form-title">{{'SPOUSE_INFORMATION' | translate}}</h3>
+                    <form [formGroup]="spouseForm">
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label><i class='bx bx-user'></i> {{'FIRST_NAME' | translate}}</label>
+                                        <input type="text" class="form-control" formControlName="firstName"
+                                            placeholder="{{'FIRST_NAME' | translate}}">
+                                        <div *ngIf="spouseForm.get('firstName')?.invalid && (spouseForm.get('firstName').dirty || spouseForm.get('firstName').touched)"
+                                            class="alert">
+                                            <div *ngIf="spouseForm.get('firstName').errors?.required">
+                                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label><i class='bx bx-user'></i> {{'LAST_NAME' | translate}}</label>
+                                        <input type="text" class="form-control" formControlName="lastName"
+                                            placeholder="{{'LAST_NAME' | translate}}">
+                                        <div *ngIf="spouseForm.get('lastName')?.invalid && (spouseForm.get('lastName').dirty || spouseForm.get('lastName').touched)"
+                                            class="alert">
+                                            <div *ngIf="spouseForm.get('lastName').errors?.required">
+                                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label> <i class='bx bx-user'></i> {{'SWEDEN_IDENTIFICATION_NUMBER' |
+                                            translate}}</label>
+                                        <input type="text" class="form-control" formControlName="identificationNumber"
+                                            placeholder="{{'SWEDEN_IDENTIFICATION_NUMBER' | translate}}">
+                                        <div *ngIf="spouseForm.get('identificationNumber')?.invalid && (spouseForm.get('identificationNumber').dirty || spouseForm.get('identificationNumber').touched)"
+                                            class="alert">
+                                            <div *ngIf="spouseForm.get('identificationNumber').errors?.required">
+                                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label><i class='bx bx-user'></i> {{'BIRTH_PLACE' | translate}}</label>
+                                        <div>
+                                            <input type="text" class="form-control" formControlName="birthPlace"
+                                                placeholder="{{'BIRTH_PLACE' | translate}}">
+                                            <div *ngIf="spouseForm.get('birthPlace')?.invalid && (spouseForm.get('birthPlace').dirty || spouseForm.get('birthPlace').touched)"
+                                                class="alert">
+                                                <div *ngIf="spouseForm.get('birthPlace').errors?.required">
+                                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label> <i class='bx bx-user'></i> {{'BIRTHDAY' | translate}}</label>
+                                        <input type="date" class="form-control" formControlName="birthDay"
+                                            placeholder="{{'BIRTHDAY' | translate}}">
+                                        <div *ngIf="spouseForm.get('birthDay')?.invalid && (spouseForm.get('birthDay').dirty || spouseForm.get('birthDay').touched)"
+                                            class="alert">
+                                            <div *ngIf="spouseForm.get('birthDay').errors?.required">
+                                                {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label><i class='bx bx-user'></i> {{'NATIONALITY' | translate}}</label>
+                                        <div>
+                                            <select formControlName="nationality" name="nationality"
+                                                class="form-control">
+                                                <option value="0" selected disabled>{{'CHOOSE' | translate}}</option>
+                                                <option *ngFor="let item of nationality" [ngValue]="item.name">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="spouseForm.get('nationality')?.invalid && (spouseForm.get('nationality').dirty || spouseForm.get('nationality').touched)"
+                                                class="alert">
+                                                <div *ngIf="spouseForm.get('nationality').errors?.required">
+                                                    {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="form-group">
+                                <label><i class='bx bx-duplicate'></i> {{'GENDER' | translate}}</label>
+                                <select formControlName="genderId" name="genderId" class="form-control">
+                                    <option value="0" selected disabled>{{'CHOOSE' | translate}}</option>
+                                    <option *ngFor="let item of gender" [ngValue]="item.id"> {{item.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="spouseForm.get('genderId')?.invalid && (spouseForm.get('genderId').dirty || spouseForm.get('genderId').touched)"
+                                    class="alert">
+                                    <div *ngIf="spouseForm.get('genderId').errors?.required">
+                                        {{'THIS_FIELD_CANNOT_BE_LEFT_BLANK'|translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+                <div class="d-flex gap-2 mb-3">
+                    <button type="button" class="btn btn-primary" (click)="showFamilyMemberForm()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-plus" viewBox="0 0 16 16">
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                        </svg>
+                        Çocuk Bilgisi Ekle
+                    </button>
+                </div>
+
+
+                <div [ngStyle]="showMemberForm==true? {'display':'block'} :  {'display':'none'} ">
+                    <div class="col-lg-12 col-md-12 ">
+                        <h3 class="form-title">{{'CHILDREN_INFORMATION' | translate}} </h3>
+                    </div>
+                    <form [formGroup]="memberForm">
+                        <div class="row" formArrayName="familyMembers">
+                            <div *ngFor="let item of familyMembers.controls; let i=index">
+                                <div class="row" [formGroupName]="i">
+                                    <h4>{{i+1+"."}}</h4>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-user'></i> {{'FIRST_NAME' | translate}}</label>
+                                            <input type="text" class="form-control" formControlName="firstName"
+                                                placeholder="{{'FIRST_NAME' | translate}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-user'></i> {{'LAST_NAME' | translate}}</label>
+                                            <input type="text" class="form-control" formControlName="lastName"
+                                                placeholder="{{'LAST_NAME' | translate}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-user'></i> {{'SWEDEN_IDENTIFICATION_NUMBER' |
+                                                translate}}</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    formControlName="identificationNumber"
+                                                    placeholder="{{'SWEDEN_IDENTIFICATION_NUMBER' | translate}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-2">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-user'></i> {{'BIRTH_PLACE' | translate}}</label>
+                                            <input type="text" class="form-control" formControlName="birthPlace"
+                                                placeholder="{{'BIRTH_PLACE' | translate}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-duplicate'></i> {{'GENDER' | translate}}</label>
+                                            <select formControlName="genderId" name="genderId" class="form-control">
+                                                <option value="0" selected disabled>{{'CHOOSE' | translate}}
+                                                </option>
+                                                <option *ngFor="let item of gender" [ngValue]="item.id"> {{item.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 form-group">
+                                        <div class="form-group">
+                                            <label><i class='bx bx-user'></i> {{'BIRTHDATE' | translate}}</label>
+                                            <input type="date" class="form-control" formControlName="birthDay"
+                                                placeholder="{{'BIRTHDATE' | translate}}">
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="col-lg-12 col-md-12 form-group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                                        (click)="addNewFamilyMember()" class="bi bi-plus-circle-fill"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                    </svg>
+                                </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div style="display:flex;">
+                        <div class="d-flex gap-2 mb-3">
+                            <button type="button" class="btn btn-primary" style="margin-right:10px"
+                                (click)="addNewFamilyMember()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                                Çocuk Ekle
+                            </button>
+                        </div>
+                        <!-- <div class="d-flex gap-2 mb-3">
+                            <button type="button" class="btn btn-primary " (click)="removeFamilyMember()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                                Çocuk Sil
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+                <form>
+
+                    <button *hasClaim="'funeral_fund_add'" [disabled]="isLoadingButton || mainForm.invalid"
+                        (click)="saveMemberForm()" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span *ngIf="!isLoadingButton">{{'SAVE' |translate}}</span>
+                        <span *ngIf="isLoadingButton">
+                            <i class="fa fa-spinner fa-spin"></i> {{'SAVING' | translate}}
+                        </span>
+
+                    </button>
+                </form>
+
+
+            </div>
+        </div>
+    </section>
+</div>

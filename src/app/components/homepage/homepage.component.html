@@ -1,0 +1,200 @@
+<div class="full-dashboard">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="weekly-schedule">
+                <h1></h1>
+                <div class="calendar">
+                    <div class="day-and-activity activity-one">
+                        <div class="day">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="activity">
+                            <h2>{{'TOTAL_USER' |
+                                translate}}</h2>
+                            <div class="participants">
+
+                            </div>
+                        </div>
+                        <button class="btn">{{totalUser}}</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row" *hasClaim="['funeral_fund_list']">
+        <div class="col">
+            <div class="dashboard-area">
+
+                <section class="statistic-title">Cenaze Fonu Yıllara Göre Gelir Tablosu</section>
+
+                <apx-chart [series]="funeralFundDebtorChart?.seriesaxis" [chart]="funeralFundDebtorChart?.chart"
+                    [dataLabels]="funeralFundDebtorChart?.dataLabels"
+                    [plotOptions]="funeralFundDebtorChart?.plotOptions" [fill]="funeralFundDebtorChart?.fill"
+                    [stroke]="funeralFundDebtorChart?.stroke" [tooltip]="funeralFundDebtorChart?.tooltip"
+                    [xaxis]="funeralFundDebtorChart?.xaxis" [labels]="funeralFundDebtorChart?.labels"
+                    [markers]="funeralFundDebtorChart?.markers"
+                    [responsive]="funeralFundDebtorChart?.responsive"></apx-chart>
+
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="dashboard-area">
+
+                <section class="statistic-title">Cenaze Fonu Yıllara Göre Vefat Eden Üyeler</section>
+
+                <apx-chart [series]="funeralFundDiedMemberChart?.seriesaxis" [chart]="funeralFundDiedMemberChart?.chart"
+                    [dataLabels]="funeralFundDiedMemberChart?.dataLabels"
+                    [plotOptions]="funeralFundDiedMemberChart?.plotOptions" [fill]="funeralFundDiedMemberChart?.fill"
+                    [stroke]="funeralFundDiedMemberChart?.stroke" [tooltip]="funeralFundDiedMemberChart?.tooltip"
+                    [xaxis]="funeralFundDiedMemberChart?.xaxis"
+                    [responsive]="funeralFundDiedMemberChart?.responsive"></apx-chart>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="dashboard-area">
+                <section class="statistic-title">Cenaze Fonu Ödenmiş Faturalar</section>
+
+                <apx-chart [series]="funeralFundPaidChart?.seriesaxis" [chart]="funeralFundPaidChart?.chart"
+                    [dataLabels]="funeralFundPaidChart?.dataLabels" [plotOptions]="funeralFundPaidChart?.plotOptions"
+                    [fill]="funeralFundPaidChart?.fill" [stroke]="funeralFundPaidChart?.stroke"
+                    [tooltip]="funeralFundPaidChart?.tooltip" [xaxis]="funeralFundPaidChart?.xaxis"
+                    [responsive]="funeralFundPaidChart?.responsive"></apx-chart>
+            </div>
+        </div>
+        <div class="col">
+            <div class="dashboard-area">
+
+                <section class="statistic-title">Cenaze Fonu Ödenmemiş Faturalar</section>
+
+                <apx-chart [series]="funeralFundUnpaidChart?.seriesaxis" [chart]="funeralFundUnpaidChart?.chart"
+                    [dataLabels]="funeralFundUnpaidChart?.dataLabels"
+                    [plotOptions]="funeralFundUnpaidChart?.plotOptions" [fill]="funeralFundUnpaidChart?.fill"
+                    [stroke]="funeralFundUnpaidChart?.stroke" [tooltip]="funeralFundUnpaidChart?.tooltip"
+                    [xaxis]="funeralFundUnpaidChart?.xaxis"
+                    [responsive]="funeralFundUnpaidChart?.responsive"></apx-chart>
+
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+
+
+
+
+
+    <div class="dashboard-area box" *hasClaim="['application_list']">
+
+        <div class="dashboard">
+
+            <section class="dashboard-box">
+                <section class="statistic-title">Gidiş Havalimanlarına Göre Hac Başvurusu</section>
+
+                <apx-chart [series]="hajjDepartureAirportChart?.seriesaxis" [chart]="hajjDepartureAirportChart?.chart"
+                    [labels]="hajjDepartureAirportChart?.labels" [plotOptions]="hajjDepartureAirportChart?.plotOptions"
+                    [fill]="hajjDepartureAirportChart?.fill" [stroke]="hajjDepartureAirportChart?.stroke"
+                    [tooltip]="hajjDepartureAirportChart?.tooltip" [xaxis]="hajjDepartureAirportChart?.xaxis"
+                    [dataLabels]="hajjDepartureAirportChart?.dataLabels"
+                    [responsive]="hajjDepartureAirportChart?.responsive"></apx-chart>
+            </section>
+
+            <!-- <section class="dashboard-box">
+            <section class="statistic-title">Dönüş Havalimanlarına Göre Hac Başvurusu</section>
+
+            <apx-chart [series]="hajjLandingAirportChart?.seriesaxis" [chart]="hajjLandingAirportChart?.chart"
+                [labels]="hajjLandingAirportChart?.labels" [plotOptions]="hajjLandingAirportChart?.plotOptions"
+                [fill]="hajjLandingAirportChart?.fill" [stroke]="hajjLandingAirportChart?.stroke"
+                [tooltip]="hajjLandingAirportChart?.tooltip" [xaxis]="hajjLandingAirportChart?.xaxis"
+                [dataLabels]="hajjLandingAirportChart?.dataLabels" [responsive]="hajjLandingAirportChart?.responsive"></apx-chart>
+        </section> -->
+
+            <div class="dashboard-box">
+
+                <section class="statistic-title">Derneklere Göre Hac Başvurusu</section>
+
+                <apx-chart [series]="hajjAssociationChart?.seriesaxis" [chart]="hajjAssociationChart?.chart"
+                    [dataLabels]="hajjAssociationChart?.dataLabels" [plotOptions]="hajjAssociationChart?.plotOptions"
+                    [fill]="hajjAssociationChart?.fill" [stroke]="hajjAssociationChart?.stroke"
+                    [tooltip]="hajjAssociationChart?.tooltip" [xaxis]="hajjAssociationChart?.xaxis"
+                    [responsive]="hajjAssociationChart?.responsive"></apx-chart>
+
+            </div>
+
+
+
+
+            <section class="dashboard-box">
+                <section class="statistic-title">Cinsiyete Göre Hac Başvurusu</section>
+
+                <apx-chart [series]="hajjMenAndWomenChart?.seriesaxis" [chart]="hajjMenAndWomenChart?.chart"
+                    [dataLabels]="hajjMenAndWomenChart?.dataLabels" [stroke]="hajjMenAndWomenChart?.stroke"
+                    [colors]="hajjMenAndWomenChart?.colors" [plotOptions]="hajjMenAndWomenChart?.plotOptions"
+                    [yaxis]="hajjMenAndWomenChart?.yaxis" [xaxis]="hajjMenAndWomenChart?.xaxis"
+                    [tooltip]="hajjMenAndWomenChart?.tooltip"></apx-chart>
+            </section>
+
+
+
+        </div>
+
+
+
+
+    </div>
+    <div class="dashboard-area box" *hasClaim="['application_list']">
+
+        <section class="dashboard">
+            <section class="dashboard-box">
+                <section class="statistic-title">Gidiş Havalimanlarına Göre Umre Başvurusu</section>
+
+                <apx-chart [series]="umrahDepartureAirportChart?.seriesaxis" [chart]="umrahDepartureAirportChart?.chart"
+                    [labels]="umrahDepartureAirportChart?.labels"
+                    [plotOptions]="umrahDepartureAirportChart?.plotOptions" [fill]="umrahDepartureAirportChart?.fill"
+                    [stroke]="umrahDepartureAirportChart?.stroke" [tooltip]="umrahDepartureAirportChart?.tooltip"
+                    [xaxis]="umrahDepartureAirportChart?.xaxis" [dataLabels]="umrahDepartureAirportChart?.dataLabels"
+                    [responsive]="umrahDepartureAirportChart?.responsive"></apx-chart>
+            </section>
+
+            <!-- <section class="dashboard-box">
+            <section class="statistic-title">Dönüş Havalimanlarına Göre Umre Başvurusu</section>
+
+            <apx-chart [series]="umrahLandingAirportChart?.seriesaxis" [chart]="umrahLandingAirportChart?.chart"
+                [labels]="umrahLandingAirportChart?.labels" [plotOptions]="umrahLandingAirportChart?.plotOptions"
+                [fill]="umrahLandingAirportChart?.fill" [stroke]="umrahLandingAirportChart?.stroke"
+                [tooltip]="umrahLandingAirportChart?.tooltip" [xaxis]="umrahLandingAirportChart?.xaxis"
+                [dataLabels]="umrahLandingAirportChart?.dataLabels" [responsive]="umrahLandingAirportChart?.responsive"></apx-chart>
+        </section> -->
+
+            <section class="dashboard-box">
+                <section class="statistic-title">Derneklere Göre Umre Başvurusu</section>
+
+                <apx-chart [series]="umrahAssociationChart?.seriesaxis" [chart]="umrahAssociationChart?.chart"
+                    [dataLabels]="umrahAssociationChart?.dataLabels" [plotOptions]="umrahAssociationChart?.plotOptions"
+                    [fill]="umrahAssociationChart?.fill" [stroke]="umrahAssociationChart?.stroke"
+                    [tooltip]="umrahAssociationChart?.tooltip" [xaxis]="umrahAssociationChart?.xaxis"
+                    [responsive]="umrahAssociationChart?.responsive"></apx-chart>
+            </section>
+
+            <section class="dashboard-box">
+                <section class="statistic-title">Cinsiyete Göre Umre Başvurusu</section>
+
+                <apx-chart [series]="umrahMenAndWomenChart?.seriesaxis" [chart]="umrahMenAndWomenChart?.chart"
+                    [dataLabels]="umrahMenAndWomenChart?.dataLabels" [stroke]="umrahMenAndWomenChart?.stroke"
+                    [colors]="umrahMenAndWomenChart?.colors" [plotOptions]="umrahMenAndWomenChart?.plotOptions"
+                    [yaxis]="umrahMenAndWomenChart?.yaxis" [xaxis]="umrahMenAndWomenChart?.xaxis"
+                    [tooltip]="umrahMenAndWomenChart?.tooltip"
+                    [responsive]="umrahMenAndWomenChart?.responsive"></apx-chart>
+            </section>
+
+        </section>
+
+    </div>

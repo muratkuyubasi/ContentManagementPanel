@@ -1,0 +1,12 @@
+.message-box.info-message-box {
+    background: #6ea8fe;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.message-box{
+    margin: 20px 0px 30px 0px;
+}

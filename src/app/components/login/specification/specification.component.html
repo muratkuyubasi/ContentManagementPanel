@@ -1,0 +1,45 @@
+<style>
+     body {
+          margin: 0;
+          padding: 0;
+          background-color: #e9e6e6;
+     }
+
+     .pdf-page {
+          width: 250mm;
+          height: auto;
+          background-color: white;
+          margin: 0 auto;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+     }
+
+     h1,
+     h2,
+     p {
+          margin: 0;
+     }
+
+     h1 {
+          font-size: 24px;
+          text-align: center;
+     }
+
+     h2 {
+          font-size: 18px;
+          margin-top: 20px;
+     }
+
+     p {
+          font-size: 15px;
+          margin-top: 10px;
+          text-align: justify;
+     }
+</style>
+
+<body>
+     <div class="pdf-page" [innerHTML]="specification">
+         
+     </div>
+</body>
+

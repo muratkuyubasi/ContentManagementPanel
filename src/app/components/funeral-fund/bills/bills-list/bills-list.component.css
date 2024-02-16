@@ -1,0 +1,30 @@
+.table> :not(caption)>*>* {
+    padding:0.3rem 0rem 0rem 0rem
+}
+
+.search-filter {
+    display: flex;
+    padding: 0;
+
+}
+
+.search-filter .table> :not(caption)>*>* {
+    padding: 0.1rem 0.5rem;
+
+}
+
+@media (max-width:663px) {
+    .search-filter {
+        display: table-row;
+    }
+}
+
+.process {
+    margin: -8px 4px;
+    color: red;
+    font-weight: bold;
+
+    i {
+        color: red
+    }
+}
